@@ -1,13 +1,13 @@
-from openai import OpenAI
-# from config import OPENROUTER_API_KEY
 import streamlit as st
+import openai
+
+# ----------- OPENROUTER CONFIG -----------
+openai.api_key = st.secrets["OPENROUTER_API_KEY"]
+openai.api_base = "https://openrouter.ai/api/v1"
+# -----------------------------------------
 
 
-client = OpenAI(
-    base_url="https://openrouter.ai/api/v1",
-    api_key=st.secrets["OPENROUTER_API_KEY"]
-)
-
+# ----------- SUMMARY FUNCTION -----------
 def summarize_email(email_text):
     prompt = f"""
 Summarize this email in 4–5 lines.
@@ -18,34 +18,39 @@ Email:
 {email_text}
 """
 
-    response = client.chat.completions.create(
-        extra_headers={
-            "HTTP-Referer": "http://localhost",   # optional
-            "X-Title": "Email-AI-Agent"           # optional
-        },
-        model="openai/gpt-4o-mini",   # correct OpenRouter model
+    response = openai.chat.completions.create(
+        model="openai/gpt-4o-mini",
         messages=[{"role": "user", "content": prompt}],
-        max_tokens=200
+        max_tokens=200,
+        extra_headers={
+            "HTTP-Referer": "http://localhost",
+            "X-Title": "Email-AI-Agent"
+        }
     )
 
-    return response.choices[0].message.content
+    return response.choices[0].message["content"]
 
+
+# ----------- REPLY FUNCTION -----------
 def reply_mail(email_text):
     prompt = f"""
-Suggest a reply to this mail to the user and keep all the cases in cosideration. For example if user 
-want to reply in yes or affirmation suggest that version and if he wants to decline suggest that version too
+Suggest multiple possible replies to this mail:
+1. If user wants to accept/agrees → give version.
+2. If user wants to decline → give version.
+3. If user wants neutral clarification → give version.
 
-Email: {email_text}
-
+Email:
+{email_text}
 """
-    response = client.chat.completions.create(
-        extra_headers={
-            "HTTP-Referer": "http://localhost",   # optional
-            "X-Title": "Email-AI-Agent"           # optional
-        },
 
-        model = "openai/gpt-4o-mini",
-        messages=[{"role": "user", "content":prompt}],
-        max_tokens=200
+    response = openai.chat.completions.create(
+        model="openai/gpt-4o-mini",
+        messages=[{"role": "user", "content": prompt}],
+        max_tokens=200,
+        extra_headers={
+            "HTTP-Referer": "http://localhost",
+            "X-Title": "Email-AI-Agent"
+        }
     )
-    return response.choices[0].message.content
+
+    return response.choices[0].message["content"]
