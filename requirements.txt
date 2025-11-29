@@ -6,3 +6,6 @@ html2text
 python-dotenv
 pyperclip
 bs4
+openai
+BeautifulSoup
+imaplib
