@@ -1,9 +1,11 @@
 from openai import OpenAI
-from config import OPENROUTER_API_KEY
+# from config import OPENROUTER_API_KEY
+import streamlit as st
+
 
 client = OpenAI(
     base_url="https://openrouter.ai/api/v1",
-    api_key=OPENROUTER_API_KEY
+    api_key=st.secrets["OPENROUTER_API_KEY"]
 )
 
 def summarize_email(email_text):
