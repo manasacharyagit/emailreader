@@ -17,21 +17,6 @@ if 'service' not in st.session_state:
 if 'user_email' not in st.session_state:
     st.session_state.user_email = None
 
-# # LOGIN LOGIC
-# if st.session_state.service is None:
-#     if st.button("Login with Google"):
-#         st.session_state.service = get_gmail_service()
-#         if st.session_state.service:
-#             st.session_state.user_email = get_user_email(st.session_state.service)
-#             st.success("Login successful!")
-
-# # LOGOUT + WELCOME LOGIC
-# else:
-#     st.write(f"### Welcome, **{st.session_state.user_email}** 👋")
-#     if st.button("Log Out"):
-#         st.session_state.service = None
-#         st.session_state.user_email = None
-#         st.success("Logged Out")
 
 if st.session_state.service is None:
     if st.button("Login with Google"):
