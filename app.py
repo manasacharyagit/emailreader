@@ -18,6 +18,7 @@ if 'user_email' not in st.session_state:
     st.session_state.user_email = None
 
 
+
 if st.session_state.service is None:
     if st.button("Login with Google"):
         st.session_state.service = get_gmail_service()
