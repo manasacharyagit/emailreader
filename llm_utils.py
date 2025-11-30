@@ -1,5 +1,8 @@
+import os
+
 from openai import OpenAI
-from config import OPENROUTER_API_KEY
+# from config import OPENROUTER_API_KEY
+OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY")
 
 
 client = OpenAI(
